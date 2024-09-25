@@ -34,18 +34,32 @@
             text-transform: uppercase;
         }
         #keyboard {
-            display: grid;
-            grid-template-columns: repeat(10, 1fr);
+            display: flex;
+            flex-direction: column;
             gap: 5px;
             margin-bottom: 20px;
         }
+        #keyboard > div {
+            display: flex;
+            gap: 5px;
+        }
         .key {
-            padding: 10px;
-            border: none;
-            background-color: #d3d6da;
-            font-size: 16px;
-            font-weight: bold;
+            width: 50px; /* Adjust the size as needed */
+            height: 50px; /* Adjust the size as needed */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1px;
+            border: 1px solid #dce1ed;
+            border-radius: 5px;
+            background-color: #dce1ed;
             cursor: pointer;
+            font-size: 14px;
+        }
+        .special-key {
+            font-size: 12px;
+            padding: 10px 5px;
+            min-width: 60px;
         }
         .correct {
             background-color: #6aaa64;
@@ -113,16 +127,50 @@
                 tile.classList.add('tile');
                 gameBoard.appendChild(tile);
             }
+              const keyboardLayout = [
+                  'QWERTYUIOP',
+                  'ASDFGHJKL',
+                  'ZXCVBNM'
+              ];
 
-            // Create keyboard
-            'QWERTYUIOPASDFGHJKLZXCVBNM'.split('').forEach(letter => {
-                const key = document.createElement('button');
-                key.textContent = letter;
-                key.classList.add('key');
-                key.addEventListener('click', () => handleInput(letter));
-                keyboard.appendChild(key);
-            });
-        }
+              function createKey(letter, isSpecial = false) {
+                  const key = document.createElement('button');
+                  key.textContent = letter;
+                  key.classList.add('key');
+                  if (isSpecial) key.classList.add('special-key');
+                  key.setAttribute('data-key', letter);
+                  key.addEventListener('click', () => {
+                      if (letter === 'ENTER') {
+                          checkGuess();
+                      } else if (letter === 'DEL') {
+                          deleteLetter();
+                      } else {
+                          handleInput(letter);
+                      }
+                  });
+                  return key;
+              }
+
+              keyboardLayout.forEach((row, index) => {
+                  const rowDiv = document.createElement('div');
+                  rowDiv.style.display = 'flex';
+                  rowDiv.style.justifyContent = 'center';
+                
+                  if (index === 2) {
+                      rowDiv.appendChild(createKey('ENTER', true));
+                  }
+                
+                  row.split('').forEach(letter => {
+                      rowDiv.appendChild(createKey(letter));
+                  });
+                
+                  if (index === 2) {
+                      rowDiv.appendChild(createKey('DEL', true));
+                  }
+                
+                  keyboard.appendChild(rowDiv);
+              });
+          }
     
         function handleInput(letter) {
             if (!gameActive) return;
@@ -201,7 +249,7 @@
             for (let i = 0; i < 5; i++) {
                 const tile = tiles[currentAttempt * 5 + i];
                 const letter = guess[i];
-                const key = keyboard.querySelector(`button:nth-child(${letter.charCodeAt(0) - 64})`);
+                const key = keyboard.querySelector(`button[data-key="${letter}"]`);
 
                 if (letter === targetWord[i]) {
                     tile.classList.add('correct');
@@ -226,13 +274,11 @@
                 gameActive = false;
                 showMessage(`Game over! The word was ${targetWord}`);
                 restartBtn.style.display = 'block';
-                triggerConfetti();
             }
 
             currentAttempt++;
             currentTile = currentAttempt * 5;
-        }
-        function triggerConfetti() {
+        }        function triggerConfetti() {
             confetti({
                 particleCount: 100,
                 spread: 70,
