@@ -1,0 +1,76 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f0f0f0;
+}
+h1 {
+    color: #333;
+}
+#game-board {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+    margin-bottom: 20px;
+}
+.tile {
+    width: 50px;
+    height: 50px;
+    border: 2px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+#keyboard {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 20px;
+}
+#keyboard > div {
+    display: flex;
+    gap: 5px;
+}
+.key {
+    width: 50px; /* Adjust the size as needed */
+    height: 50px; /* Adjust the size as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1px;
+    border: 1px solid #dce1ed;
+    border-radius: 5px;
+    background-color: #dce1ed;
+    cursor: pointer;
+    font-size: 14px;
+}
+.special-key {
+    font-size: 12px;
+    padding: 10px 5px;
+    min-width: 60px;
+}
+.correct {
+    background-color: #6aaa64;
+    color: white;
+}
+.present {
+    background-color: #c9b458;
+    color: white;
+}
+.absent {
+    background-color: #787c7e;
+    color: white;
+}
+#restart-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+}
